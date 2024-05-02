@@ -38,6 +38,7 @@ function Register() {
       const resData = await axios.post("http://localhost:3000/api/users/userRegister", {
         ...userData
       });
+        router.push("/pages/blogs", { scroll: false });
       console.log(resData);
     } catch (error) {}
   };

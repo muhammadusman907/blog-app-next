@@ -39,9 +39,10 @@ function Login() {
         "http://localhost:3000/api/users/userLogin",
         { ...userData }
       );
-
+  
       localStorage.setItem("token", resData?.data?.token);
       localStorage.setItem("userData", JSON.stringify(resData?.data?.findUser) );
+      router.push("/pages/blogs", { scroll: false })
       console.log(resData);
     } catch (error) {
       console.log(error);
