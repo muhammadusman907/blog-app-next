@@ -12,7 +12,8 @@ import Input from "@/app/component/input/input";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import MyModal from "@/app/component/modal/modal";
 import axios  from 'axios';
-const Blog = ({getAllBlogs}) => {
+import List from './../../component/list/list';
+const Blog = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [convertedContent, setConvertedContent] = useState(null);
   const [blog, setBlog] = useState(null);
@@ -24,6 +25,16 @@ const Blog = ({getAllBlogs}) => {
 const [open, setOpen] = React.useState(false);
 const handleOpen = () => setOpen(true);
 const handleClose = () => setOpen(false);
+ const getAllBlogs = async () => {
+   try {
+     const blogData = await axios.get("http://localhost:3000/api/blogs");
+     console.log(blogData);
+     setBlogList(blogData?.data?.allBlogs);
+   } catch (error) {
+     console.log(error);
+   }
+ };
+ 
  const addBlog = async() =>{
   try {
  const blogData =  {
@@ -32,6 +43,7 @@ const handleClose = () => setOpen(false);
     userId : userData.id 
   }
   const add_data = await axios.post("http://localhost:3000/api/blogs" , {...blogData}) ; 
+  console.log(add_data)
   getAllBlogs()
 
   }
@@ -51,9 +63,9 @@ const handleClose = () => setOpen(false);
     };
   }
 
-// useEffect(()=>{
-//   getAllBlogs ()
-// },[])
+useEffect(() => {
+  getAllBlogs();
+}, []);
   return (
     <>
       {/* <Navbar /> */}
@@ -113,7 +125,9 @@ const handleClose = () => setOpen(false);
           }}
         />
       </div>
+      <div className="flex flex-col-reverse" >
 
+    
       {blogList.map((value, index) => (
         <>
           <div
@@ -132,27 +146,9 @@ const handleClose = () => setOpen(false);
             ></div>
           </div>
         </>
-      ))}
+      ))} 
+       </div>
     </>
   );
 };
-
-
- async function getServerSideProps() {
-  // Fetch data from external API
-  const getAllBlogs = async() =>{
-    try {
-       const blogData = await axios.get("http://localhost:3000/api/blogs") ;
-       console.log(blogData)
-       setBlogList (blogData?.data?.allBlogs)
-    } catch (error) {
-      console.log(error) 
-    }
-  }
-  
-  // Pass data to the page via props
-  return { props: { getAllBlogs } }
-}
- 
-
-export {getServerSideProps , Blog}
+export default Blog;
