@@ -41,6 +41,7 @@ function Login() {
       );
 
       localStorage.setItem("token", resData?.data?.token);
+      localStorage.setItem("userData", JSON.stringify(resData?.data?.findUser) );
       console.log(resData);
     } catch (error) {
       console.log(error);

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button } from "@mui/material";
-const MyButton = ({btnName , ...prop}) => {
+const MyButton = ({btnName , icon , ...prop }) => {
   return (
      
 <>
-<Button variant="contained"  {...prop}>{btnName}</Button>
+<Button variant="contained"  {...prop}>{icon && icon} {btnName}</Button>
 
 </>  )
 }

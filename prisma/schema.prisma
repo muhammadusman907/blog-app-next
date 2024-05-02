@@ -13,12 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
+model Blog {
   id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String    @unique
   title    String
-  body     String
-  authorId String    @db.ObjectId
+  description  String
+  userId String    @db.ObjectId 
 }
 
 model User {
