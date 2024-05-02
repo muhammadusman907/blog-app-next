@@ -8,8 +8,7 @@ const GET = async(request) =>{
 
 const POST = async (request) =>{
       const data = await request.json();
-      console.log(data)
-      return  NextResponse.json(addBlog(data)) 
+      return  NextResponse.json( await addBlog(data)) 
 }
 
 export { POST , GET}

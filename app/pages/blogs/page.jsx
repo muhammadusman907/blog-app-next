@@ -12,6 +12,7 @@ import Input from "@/app/component/input/input";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import MyModal from "@/app/component/modal/modal";
 import axios  from 'axios';
+import DeleteIcon from "@mui/icons-material/Delete";
 import List from './../../component/list/list';
 const Blog = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -34,7 +35,7 @@ const handleClose = () => setOpen(false);
      console.log(error);
    }
  };
- 
+
  const addBlog = async() =>{
   try {
  const blogData =  {
@@ -43,7 +44,8 @@ const handleClose = () => setOpen(false);
     userId : userData.id 
   }
   const add_data = await axios.post("http://localhost:3000/api/blogs" , {...blogData}) ; 
-  console.log(add_data)
+  setBlogList( [ ...blogList ,  add_data?.data]);
+  // console.log(add_data)
   getAllBlogs()
 
   }
@@ -69,30 +71,42 @@ useEffect(() => {
   return (
     <>
       {/* <Navbar /> */}
-    <MyModal open={open}
-        handleClose={handleClose}>
-          <div className="border-2 container m-auto mt-10 px-3 rounded-md">
-              <div className="container">
-                <label>
-                  {" "}
-                  Title :
-                  <Input
-                    classAdd="container mb-5 "
-                    placeholder="Title"
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div className="h-[200px]">
-                <Editor
-                  editorState={editorState}
-                  onEditorStateChange={setEditorState}
-                  wrapperClassName="wrapper-class"
-                  editorClassName="editor-class"
-                  toolbarClassName="toolbar-class"
-                />
-              </div>
-            </div> </MyModal>
+      <MyModal open={open} handleClose={handleClose}>
+        <div className="border-2 container m-auto mt-10 px-3 rounded-md">
+          <div className="container">
+            <label>
+              {" "}
+              Title :
+              <Input
+                classAdd="container mb-5 "
+                placeholder="Title"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </label>
+          </div>
+          <div className="h-[200px]">
+            <Editor
+              editorState={editorState}
+              onEditorStateChange={setEditorState}
+              wrapperClassName="wrapper-class"
+              editorClassName="editor-class"
+              toolbarClassName="toolbar-class"
+            />
+           
+          </div>
+         
+        </div>{" "}  
+        <div className="flex justify-center mt-3">
+        <MyButton
+          btnName="Blog Post"
+          variant="contained"
+          onClick={() => {
+            setBlog(convertedContent);
+            addBlog();
+          }}
+        />
+      </div>
+      </MyModal>
       <div className="border-2 container m-auto mt-10 px-3 rounded-md">
         <div className="container">
           <label>
@@ -121,33 +135,31 @@ useEffect(() => {
           variant="contained"
           onClick={() => {
             setBlog(convertedContent);
-            addBlog()
+            addBlog();
           }}
         />
       </div>
-      <div className="flex flex-col-reverse" >
-
-    
-      {blogList.map((value, index) => (
-        <>
-          <div
-            key={index}
-            className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md "
-          >
-            <div className="flex justify-between ">
-              <h3 className="font-bold text-[1.2rem] "> {value.title}usman</h3>
-
-              <ModeEditOutlineIcon onClick={handleOpen}>
-                edit
-              </ModeEditOutlineIcon>
-            </div>
+      <div className="flex flex-col-reverse">
+        {blogList.map((value, index) => (
+          <>
             <div
-              dangerouslySetInnerHTML={createMarkup(value.description)}
-            ></div>
-          </div>
-        </>
-      ))} 
-       </div>
+              key={value.id}
+              className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md "
+            >
+              <div className="flex justify-between ">
+                <h3 className="font-bold text-[1.2rem] "> {value.title}</h3>
+       <div>   <DeleteIcon className="cursor-pointer" />
+                <ModeEditOutlineIcon className="cursor-pointer"  onClick={handleOpen}>
+                </ModeEditOutlineIcon>
+</div>
+              </div>
+              <div
+                dangerouslySetInnerHTML={createMarkup(value.description)}
+              ></div>
+            </div>
+          </>
+        ))}
+      </div>
     </>
   );
 };
