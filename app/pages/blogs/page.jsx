@@ -241,9 +241,9 @@ useEffect(() => {
        </Box>
       <div className="flex flex-col-reverse">
         {blogList.map((value, index) => (
-          <>
+          <div key={value.id}>
             <div
-              key={value.id}
+              
               className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md">
               <div className="flex justify-between ">
                 <h3 className="font-bold text-[1.2rem] "> {value.title}</h3>
@@ -260,12 +260,12 @@ useEffect(() => {
               <div
                 dangerouslySetInnerHTML={createMarkup(value.description)}
               ></div>
-            <div class="text-blue-500 cursor-pointer" onClick={() =>  {
+            <div className="text-blue-500 cursor-pointer" onClick={() =>  {
                 router.push(`/pages/blogs/${value.id}`, { scroll: false })
                 setBlogValue(value)
               }}>show more </div>
             </div>
-          </>
+          </div>
         ))}
       </div>
      
