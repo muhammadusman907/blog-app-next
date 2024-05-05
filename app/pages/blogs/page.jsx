@@ -26,9 +26,9 @@ const [editorState, setEditorState] = useState(EditorState.createEmpty());
 //     }, [editorState]);
 
   const [convertedContent, setConvertedContent] = useState(null);
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState();
   const [blogList, setBlogList] = useState([]);
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
   const router = useRouter();
   //*************** */ default content in draft js ************************
   const [selectedBlogEditorState, setSelectedBlogEditorState] = useState(null);
