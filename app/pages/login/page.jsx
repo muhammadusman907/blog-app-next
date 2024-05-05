@@ -1,6 +1,6 @@
 // pages/login.js
 "use client";
-import * as React from "react";
+import React, { useState, useEffect,useContext , createContext} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,13 +17,17 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
+import Loader from '@/app/component/loader/loader';
+import {sweetAlert} from '@/app/helper/helper'
 // TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 function Login() {
+
+   const [loading , setLoading] = useState (false) ;
+
   const handleSubmit = async (event) => {
+
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -34,17 +38,27 @@ function Login() {
       email: data.get("email"),
       password: data.get("password"),
     };
+    setLoading(true)
     try {
       const resData = await axios.post(
         "http://localhost:3000/api/users/userLogin",
         { ...userData }
       );
-  
       localStorage.setItem("token", resData?.data?.token);
       localStorage.setItem("userData", JSON.stringify(resData?.data?.findUser) );
+       setLoading(false)
+      sweetAlert ({message :"login Succesfully" , icon : "success" , button : false})
+     
       router.push("/pages/blogs", { scroll: false })
       console.log(resData);
     } catch (error) {
+      sweetAlert({
+        message: error?.response?.data?.message,
+        icon: "error",
+        button: true,
+      });
+             setLoading(false);
+
       console.log(error);
     }
   };
@@ -58,6 +72,8 @@ function Login() {
     }
   },[])
   return (
+    <>
+    {loading && <Loader />}
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -124,6 +140,7 @@ function Login() {
         </Box>
       </Container>
     </ThemeProvider>
+    </>
   );
 }
 export default Login;

@@ -1,6 +1,6 @@
 // pages/Register.js
 "use client";
-import * as React from "react";
+import React, { useState, useEffect, useContext, createContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,15 +16,17 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
+import {sweetAlert} from '@/app/helper/helper'
+import Loader from '@/app/component/loader/loader';
 // import { Navbar } from '@/component/navbar/navbar';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
-
+ 
 function Register() {
+  const [loading , setLoading] = useState (false) ;
   const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,9 +40,19 @@ function Register() {
       const resData = await axios.post("http://localhost:3000/api/users/userRegister", {
         ...userData
       });
-        router.push("/pages/blogs", { scroll: false });
+  localStorage.setItem("token", resData?.data?.token);
+  localStorage.setItem("userData", JSON.stringify(resData?.data));
+  console.log(resData?.data)
+  setLoading(false);
+  sweetAlert({ message: "regiter Succesfully", icon: "success", button: false });
+  router.push("/pages/blogs", { scroll: false });
       console.log(resData);
-    } catch (error) {}
+    } catch (error) {
+     sweetAlert({ message: error?.response?.data?.err, icon: "error", button : true });
+      console.log(error);
+        setLoading(false);
+
+    }
   };
   React.useEffect(()=>{  
     if(localStorage.getItem("token")){
@@ -49,7 +61,7 @@ function Register() {
   },[])
   return (
     <>  
-  
+  {loading && <Loader />}
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />

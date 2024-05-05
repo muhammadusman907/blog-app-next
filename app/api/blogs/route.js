@@ -1,8 +1,7 @@
-import { addBlog, getAllBlogs } from "@/lib/blogs/blog";
+import { addBlog, getAllBlogs, updateBlog , deleteBlog} from "@/lib/blogs/blog";
 import { NextResponse , NextRequest} from "next/server";
 
 const GET = async(request) =>{
-  // console.log(request) 
    return getAllBlogs()
 }
 
