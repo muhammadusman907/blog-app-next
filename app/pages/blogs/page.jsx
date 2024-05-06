@@ -21,10 +21,6 @@ import Loader from '@/app/component/loader/loader';
 const Blog = () => {
 
 const [editorState, setEditorState] = useState(EditorState.createEmpty());
-// const memoizedEditorState = useMemo(() => {
-//         return editorState;
-//     }, [editorState]);
-
   const [convertedContent, setConvertedContent] = useState(null);
   const [blog, setBlog] = useState();
   const [blogList, setBlogList] = useState([]);

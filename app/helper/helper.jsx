@@ -1,4 +1,5 @@
 
+"use client"
 import Swal from "sweetalert2";
 const sweetAlert = ({icon , message , button}) =>{
   Swal.fire({

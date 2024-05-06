@@ -28,12 +28,25 @@ const SingleBlog = ({params}) => {
   
     
   }
-   console.log(blogValue?.data?.singleBlog?.description)
-   function createMarkup(html) {
-    return {
-      __html: DOMPurify.sanitize(html),
+  //  console.log(blogValue?.data?.singleBlog?.description)
+   
+//   useEffect(()=>{
+// function createMarkup(html) {
+//     return {
+//       __html: DOMPurify.sanitize(html),
+//     };
+//   }
+//   },
+// [])
+  useEffect(() => {
+    // DOMPurify ko client-side mein load karein
+    const loadDOMPurify = async () => {
+      const DOMPurify = await import("dompurify");
+      // DOMPurify ka use karein yahan
     };
-  }
+    loadDOMPurify();
+  }, []);
+
 useEffect(() =>{
 getSingleBlog()
 
@@ -65,9 +78,10 @@ getSingleBlog()
                   ></ModeEditOutlineIcon> */}
                 </div>
               </div>
-              <div
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blogValue?.data?.singleBlog?.description) }}></div>
+              {/* <div
                 dangerouslySetInnerHTML={createMarkup(blogValue?.data?.singleBlog?.description)}
-              ></div>
+              ></div> */}
               
             </div>
             : <Loader/> }

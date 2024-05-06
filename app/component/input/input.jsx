@@ -1,6 +1,7 @@
-import React from 'react'
+"use client";
+import React from "react";
 
-const Input = ({classAdd , ...prop}) => {
+const Input = ({ classAdd, ...prop }) => {
   return (
     <>
       <input
@@ -10,10 +11,11 @@ const Input = ({classAdd , ...prop}) => {
         rounded-lg focus:ring-blue-500 focus:border-red-500 
         block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${classAdd}`}
-        require 
-        {...prop} />
+        require
+        {...prop}
+      />
     </>
   );
-}
+};
 
-export default Input ;
+export default Input;
