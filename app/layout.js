@@ -11,7 +11,25 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>{children}</body>
+      <body className={inter.className} suppressHydrationWarning={true}> {typeof window === "undefined" ? null : children}</body>
     </html>
   );
 }
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <RootLayout>
+      <Component {...pageProps} />
+    </RootLayout>
+  );
+}
+
+// function SafeHydrate({ children }) {
+//   return (
+//     <div suppressHydrationWarning>
+     
+//     </div>
+//   );
+// }
+
+

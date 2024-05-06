@@ -7,7 +7,7 @@ import React, { useState, useEffect,useContext , createContext, useMemo} from "r
 import { convertToHTML , convertFromHTML } from "draft-convert";
 import { Editor } from "react-draft-wysiwyg";
 // import DOMPurify from "dompurify";
-import DOMPurify from "isomorphic-dompurify";
+// import DOMPurify from "isomorphic-dompurify";
 import "draft-js/dist/Draft.css";
 import Input from "@/app/component/input/input";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
@@ -42,7 +42,7 @@ const local_storage_data = localStorage.getItem("userData") ;
   const getData =  local_storage_data !== "undefined" ? local_storage_data : localStorage.setItem("userData" , "" );
   const userData =  JSON.parse(getData) ;
 const [open, setOpen] = React.useState(false);
-if(window == "undefined"){
+if(typeof window == "undefined"){
 
   console.log(window)
 }
@@ -143,16 +143,16 @@ const deleteBlog = async(id) =>{
   //   };
   // }
 
-    useEffect(() => {
-    // DOMPurify ko client-side mein load karein
-    if (window !== "undefined" ){
-          const loadDOMPurify = async () => {
-      const DOMPurify = await import('dompurify');
-      // DOMPurify ka use karein yahan
-    };
-    loadDOMPurify();
-    }
-  }, []);
+  //   useEffect(() => {
+  //   // DOMPurify ko client-side mein load karein
+  //   if (typeof window !== "undefined" ){
+  //         const loadDOMPurify = async () => {
+  //     const DOMPurify = await import('dompurify');
+  //     // DOMPurify ka use karein yahan
+  //   };
+  //   loadDOMPurify();
+  //   }
+  // }, []);
 
 useEffect(() => {
   getAllBlogs();
@@ -269,8 +269,7 @@ useEffect(() => {
                   ></ModeEditOutlineIcon>
                 </div>
               </div>
-                   {
-              window !==  "undefined" &&  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value?.description) }}></div>}
+                <div dangerouslySetInnerHTML={{ __html: value?.description}}></div>
               
             <div className="text-blue-500 cursor-pointer" onClick={() =>  {
                 router.push(`/pages/blogs/${value.id}`, { scroll: false })
@@ -285,4 +284,6 @@ useEffect(() => {
   );
 };
 
-export default Blog;
+export default typeof window !== "undefined" && Blog;
+
+
