@@ -8,7 +8,8 @@ import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 
 import { BlogData } from '@/app/context/context';
   import axios from "axios"
-  import DOMPurify from "dompurify";
+  // import DOMPurify from "dompurify";
+  import DOMPurify from "isomorphic-dompurify";
 import Loader from '@/app/component/loader/loader';
 
 const SingleBlog = ({params}) => {
@@ -40,11 +41,13 @@ const SingleBlog = ({params}) => {
 // [])
   useEffect(() => {
     // DOMPurify ko client-side mein load karein
-    const loadDOMPurify = async () => {
-      const DOMPurify = await import("dompurify");
-      // DOMPurify ka use karein yahan
-    };
-    loadDOMPurify();
+   if (window !== "undefined") {
+     const loadDOMPurify = async () => {
+       const DOMPurify = await import("dompurify");
+       // DOMPurify ka use karein yahan
+     };
+     loadDOMPurify();
+   }
   }, []);
 
 useEffect(() =>{
@@ -78,7 +81,10 @@ getSingleBlog()
                   ></ModeEditOutlineIcon> */}
                 </div>
               </div>
+              {
+              window !==  "undefined" &&
                 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(blogValue?.data?.singleBlog?.description) }}></div>
+                 }
               {/* <div
                 dangerouslySetInnerHTML={createMarkup(blogValue?.data?.singleBlog?.description)}
               ></div> */}

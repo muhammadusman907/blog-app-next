@@ -6,7 +6,8 @@ import React, { useState, useEffect,useContext , createContext, useMemo} from "r
 // import Navbar from "@/app/component/navbar/navbar";
 import { convertToHTML , convertFromHTML } from "draft-convert";
 import { Editor } from "react-draft-wysiwyg";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import "draft-js/dist/Draft.css";
 import Input from "@/app/component/input/input";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
@@ -41,6 +42,10 @@ const local_storage_data = localStorage.getItem("userData") ;
   const getData =  local_storage_data !== "undefined" ? local_storage_data : localStorage.setItem("userData" , "" );
   const userData =  JSON.parse(getData) ;
 const [open, setOpen] = React.useState(false);
+if(window == "undefined"){
+
+  console.log(window)
+}
 const handleOpen = () => setOpen(true);
 const handleClose = () => {
   setAddUpdate("")
@@ -140,11 +145,13 @@ const deleteBlog = async(id) =>{
 
     useEffect(() => {
     // DOMPurify ko client-side mein load karein
-    const loadDOMPurify = async () => {
+    if (window !== "undefined" ){
+          const loadDOMPurify = async () => {
       const DOMPurify = await import('dompurify');
       // DOMPurify ka use karein yahan
     };
     loadDOMPurify();
+    }
   }, []);
 
 useEffect(() => {
@@ -262,11 +269,9 @@ useEffect(() => {
                   ></ModeEditOutlineIcon>
                 </div>
               </div>
-                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value?.description) }}></div>
-
-              {/* <div
-                dangerouslySetInnerHTML={createMarkup(value.description)}
-              ></div> */}
+                   {
+              window !==  "undefined" &&  <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value?.description) }}></div>}
+              
             <div className="text-blue-500 cursor-pointer" onClick={() =>  {
                 router.push(`/pages/blogs/${value.id}`, { scroll: false })
                 setBlogValue(value)
