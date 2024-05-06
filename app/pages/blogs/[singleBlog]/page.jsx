@@ -13,7 +13,7 @@ import { BlogData } from '@/app/context/context';
 import Loader from '@/app/component/loader/loader';
 
 const SingleBlog = ({params}) => {
-  if (typeof window !== "undefined") {
+  if (typeof window !== undefined) {
     return;
   }
   const [blogValue , setBlogValue] = useState ({}) ;

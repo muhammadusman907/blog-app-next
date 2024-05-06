@@ -20,7 +20,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Loader from '@/app/component/loader/loader';
 const Blog = () => {
-if( typeof window !== "undefined"){
+if( typeof window !== undefined){
         return
 }
 const [editorState, setEditorState] = useState(EditorState.createEmpty());
