@@ -132,11 +132,20 @@ const deleteBlog = async(id) =>{
     setConvertedContent(html);
   }, [editorState]);
 
-  function createMarkup(html) {
-    return {
-      __html: DOMPurify.sanitize(html),
+  // function createMarkup(html) {
+  //   return {
+  //     __html: DOMPurify.sanitize(html),
+  //   };
+  // }
+
+    useEffect(() => {
+    // DOMPurify ko client-side mein load karein
+    const loadDOMPurify = async () => {
+      const DOMPurify = await import('dompurify');
+      // DOMPurify ka use karein yahan
     };
-  }
+    loadDOMPurify();
+  }, []);
 
 useEffect(() => {
   getAllBlogs();
@@ -253,9 +262,11 @@ useEffect(() => {
                   ></ModeEditOutlineIcon>
                 </div>
               </div>
-              <div
+                   <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value?.description) }}></div>
+
+              {/* <div
                 dangerouslySetInnerHTML={createMarkup(value.description)}
-              ></div>
+              ></div> */}
             <div className="text-blue-500 cursor-pointer" onClick={() =>  {
                 router.push(`/pages/blogs/${value.id}`, { scroll: false })
                 setBlogValue(value)
