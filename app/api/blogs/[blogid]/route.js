@@ -2,6 +2,7 @@ import { deleteBlog , updateBlog , getBlog } from "@/lib/blogs/blog";
 import { NextResponse , NextRequest} from "next/server";
 
 const GET = async(request , {params}) =>{
+      console.log(params)
       return  await getBlog(params.blogid);
 }
 

@@ -9,7 +9,7 @@ export default function Home() {
 
 
   useEffect(()=>{
-      router.push("/pages/login", { scroll: false });
+      router.push("/pages/login");
   } , [])
   return (
     <>
