@@ -7,7 +7,7 @@ const SingleBlogs = ({params}) =>{
   return(
     <>
     {
-      typeof window !== undefined &&  <SingleBlog params={params}/>
+      typeof window === undefined &&  <SingleBlog params={params}/>
     }
  
   </>

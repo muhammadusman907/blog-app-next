@@ -299,7 +299,7 @@ const Blogs = () => {
 return(
   
   <>
- {typeof window !== undefined && <Blog />}
+ {typeof window === undefined && <Blog />}
   </>
 )
 }
