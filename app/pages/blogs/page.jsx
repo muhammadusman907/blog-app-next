@@ -293,7 +293,7 @@ import Blog from "./blog";
 // export default typeof window !== "undefined" && Blog;
 const Blogs = () => {
   
-  if(typeof window !== undefined){
+  if(typeof window === undefined){
     return
   }
 return(
