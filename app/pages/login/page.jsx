@@ -41,7 +41,7 @@ function Login() {
     setLoading(true)
     try {
       const resData = await axios.post(
-        "http://localhost:3000/api/users/userLogin",
+        "https://blog-app-next-chi.vercel.app/api/users/userLogin",
         { ...userData }
       );
       localStorage.setItem("token", resData?.data?.token);

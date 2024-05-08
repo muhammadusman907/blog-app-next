@@ -18,7 +18,7 @@ const SingleBlog = () => {
   const getSingleBlog = async () => {
     try {
       const data = await axios.get(
-        `http://localhost:3000/api/blogs/${params?.singleBlog}`
+        `https://blog-app-next-chi.vercel.app/api/blogs/${params?.singleBlog}`
       );
       setBlogValue(data);
       console.log(data);

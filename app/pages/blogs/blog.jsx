@@ -40,7 +40,8 @@ const Blog = () => {
   //************************** */ blog value*******************************
   const [blogValue, setBlogValue] = useState({});
 
-  const BlogData = createContext();
+  console.log("env variable ----->", process.env)
+
   // console.log(blogValue , BlogData)
   // modal *************************************
   const local_storage_data = localStorage.getItem("userData");
@@ -61,7 +62,9 @@ const Blog = () => {
   };
   const getAllBlogs = async () => {
     try {
-      const blogData = await axios.get("http://localhost:3000/api/blogs");
+      const blogData = await axios.get(
+        "https://blog-app-next-chi.vercel.app/api/blogs"
+      );
       console.log(blogData);
       setBlogList(blogData?.data?.allBlogs);
     } catch (error) {
@@ -82,9 +85,12 @@ const Blog = () => {
         description: convertedContent,
         userId: userData.id,
       };
-      const add_data = await axios.post("http://localhost:3000/api/blogs", {
-        ...blogData,
-      });
+      const add_data = await axios.post(
+        "https://blog-app-next-chi.vercel.app/api/blogs",
+        {
+          ...blogData,
+        }
+      );
       // resetValue()
       setBlogList([...blogList, add_data?.data]);
 
@@ -115,7 +121,7 @@ const Blog = () => {
       };
       console.log(blogData);
       const updateData = await axios.put(
-        `http://localhost:3000/api/blogs/${blogValue.id}`,
+        `https://blog-app-next-chi.vercel.app/api/blogs/${blogValue.id}`,
         { ...blogData }
       );
       setBlogList([...blogList, updateData?.data]);
@@ -133,7 +139,7 @@ const Blog = () => {
   const deleteBlog = async (id) => {
     try {
       const updateData = await axios.delete(
-        `http://localhost:3000/api/blogs/${id}`
+        `https://blog-app-next-chi.vercel.app/api/blogs/${id}`
       );
       getAllBlogs();
     } catch (error) {

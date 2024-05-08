@@ -37,7 +37,7 @@ function Register() {
       user_name: data.get("user_name"),
     };
     try {
-      const resData = await axios.post("http://localhost:3000/api/users/userRegister", {
+      const resData = await axios.post("https://blog-app-next-chi.vercel.app/api/users/userRegister", {
         ...userData
       });
   localStorage.setItem("token", resData?.data?.token);

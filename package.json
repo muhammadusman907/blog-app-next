@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
+    "@next/env": "^14.2.3",
     "@prisma/client": "^5.13.0",
     "axios": "^1.6.8",
     "babel-polyfill": "^6.26.0",
