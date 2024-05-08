@@ -245,7 +245,6 @@ const Blog = () => {
             {addUpdate !== "update" && (
               <TextField
                 fullWidth
-                value={title}
                 label="Title"
                 id="fullWidth"
                 name="title"
@@ -316,4 +315,4 @@ const Blog = () => {
   );
 };
 
-export default typeof window !== "undefined" && Blog;
+export default Blog;
