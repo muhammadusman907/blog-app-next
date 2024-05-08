@@ -137,7 +137,7 @@ const Blog = () => {
       );
       getAllBlogs();
     } catch (error) {
-      consoe.log(error);
+      console.log(error);
     } finally {
       setLoading(false);
     }

@@ -2,16 +2,19 @@
 
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-
+import { useParams } from "next/navigation";
 import { BlogData } from "@/app/context/context";
 import axios from "axios";
 // import DOMPurify from "dompurify";
 // import DOMPurify from "isomorphic-dompurify";
 import Loader from "@/app/component/loader/loader";
-
-const SingleBlog = ({ params }) => {
+import { useSearchParams } from 'next/navigation'
+const SingleBlog = () => {
   const [blogValue, setBlogValue] = useState({});
   const [loading, setLoading] = useState(true);
+  const params = useParams();
+  console.log(params)
+
   const getSingleBlog = async () => {
     try {
       const data = await axios.get(
@@ -27,41 +30,16 @@ const SingleBlog = ({ params }) => {
   };
   useEffect(() => {
     getSingleBlog();
-    if (typeof window !== undefined) {
-      return;
-    }
+    // if (typeof window !== undefined) {
+    //   return;
+    // }
   }, []);
-  //  console.log(blogValue?.data?.singleBlog?.description)
-
-  //   useEffect(()=>{
-  // function createMarkup(html) {
-  //     return {
-  //       __html: DOMPurify.sanitize(html),
-  //     };
-  //   }
-  //   },
-  // [])
-  // useEffect(() => {
-  //   // DOMPurify ko client-side mein load karein
-  //  if (typeof window !== "undefined") {
-  //    const loadDOMPurify = async () => {
-  //      const DOMPurify = await import("dompurify");
-  //      // DOMPurify ka use karein yahan
-  //    };
-  //    loadDOMPurify();
-  //  }
-  // }, []);
-
   return (
     <>
       {!loading ? (
         <div
           key={blogValue?.data?.singleBlog?.id}
           className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md "
-          // onClick={() =>  {
-          //   router.push(`/pages/blogs/${blogValue?.data?.singleBlog?.id}`, { scroll: false })
-          //   // setblogValue?.data?.singleBlog?(blogValue?.data?.singleBlog?)
-          // }}
         >
           <div className="flex justify-between ">
             <h3 className="font-bold text-[1.2rem] ">

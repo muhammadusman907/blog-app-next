@@ -13,6 +13,7 @@ import { NextResponse , NextRequest} from "next/server";
 // }
 
 const GET = async(request) =>{
+  
    return getAllBlogs()
 }
 
