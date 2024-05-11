@@ -9,7 +9,7 @@ import React, {
   createContext,
   useMemo,
 } from "react";
-// import Navbar from "@/app/component/navbar/navbar";
+import Navbar from "@/app/component/navbar/navbar";
 import { convertToHTML, convertFromHTML } from "draft-convert";
 import { Editor } from "react-draft-wysiwyg";
 // import DOMPurify from "dompurify";
@@ -25,7 +25,14 @@ import { useRouter } from "next/navigation";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Loader from "@/app/component/loader/loader";
+import { getEnvVariable } from "@/app/service/blogs";
+import env from "react-dotenv";
+import { API , getBlogData , addBlogData , deleteBlogData , updateBlogData} from "./page";
+import { confirm , sweetAlert } from "@/app/helper/helper";
+// import { confirm } from "../helper" 
+// require("dotenv").config();
 const Blog = () => {
+  // console.log("env ------->", env);
   const router = useRouter();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [convertedContent, setConvertedContent] = useState(null);
@@ -40,7 +47,7 @@ const Blog = () => {
   //************************** */ blog value*******************************
   const [blogValue, setBlogValue] = useState({});
 
-  console.log("env variable ----->", process.env)
+  // console.log("env variable ----->" , API())
 
   // console.log(blogValue , BlogData)
   // modal *************************************
@@ -61,22 +68,23 @@ const Blog = () => {
     setOpen(false);
   };
   const getAllBlogs = async () => {
-    try {
-      const blogData = await axios.get(
-        "https://blog-app-next-chi.vercel.app/api/blogs"
-      );
-      console.log(blogData);
-      setBlogList(blogData?.data?.allBlogs);
-    } catch (error) {
-      console.log(error);
-    } finally {
+    const data = await getBlogData ()
+  //  console.log(data ) 
+    try {  
+       setBlogList(data?.data?.allBlogs)
+    }
+    catch (error) {
+      console.log(error)
+    }finally {
       setLoading(false);
     }
+   
   };
-
+//  console.log("id ----->" , userData)
   const addBlog = async (event) => {
     try {
       event.preventDefault();
+      setLoading(true);
       const values = new FormData(event.currentTarget);
       const title = values.get("title");
 
@@ -85,15 +93,10 @@ const Blog = () => {
         description: convertedContent,
         userId: userData.id,
       };
-      const add_data = await axios.post(
-        "https://blog-app-next-chi.vercel.app/api/blogs",
-        {
-          ...blogData,
-        }
-      );
-      // resetValue()
-      setBlogList([...blogList, add_data?.data]);
 
+     const add_data = await addBlogData (blogData) ;
+      sweetAlert ({icon : "success" , message :"added sucessfully"})
+     setBlogList([...blogList, add_data?.data]);
       getAllBlogs();
       setEditorState(EditorState.createEmpty());
       setTitle("");
@@ -113,19 +116,17 @@ const Blog = () => {
       event.preventDefault();
       const values = new FormData(event.currentTarget);
       const title = values.get("update_title");
-
+      setLoading(true)
       const blogData = {
         title,
         description: convertedContent,
         userId: userData.id,
       };
-      console.log(blogData);
-      const updateData = await axios.put(
-        `https://blog-app-next-chi.vercel.app/api/blogs/${blogValue.id}`,
-        { ...blogData }
-      );
+      // console.log(blogData);
+      const updateData = await updateBlogData(blogData , blogValue.id )
+       sweetAlert ({icon : "success" , message :"update sucessfully"})
       setBlogList([...blogList, updateData?.data]);
-      console.log(updateData);
+      // console.log(updateData);
       getAllBlogs();
       setEditorState(EditorState.createEmpty());
       setTitle("");
@@ -138,10 +139,13 @@ const Blog = () => {
   };
   const deleteBlog = async (id) => {
     try {
-      const updateData = await axios.delete(
-        `https://blog-app-next-chi.vercel.app/api/blogs/${id}`
-      );
+     const conformaion = await confirm();
+    if(conformaion.isConfirmed){
+       setLoading(true)
+      const delete_blog = await deleteBlogData(id) ; 
+      sweetAlert ({icon : "success" , message :"delete sucessfully"})
       getAllBlogs();
+    }
     } catch (error) {
       console.log(error);
     } finally {
@@ -153,38 +157,18 @@ const Blog = () => {
     setConvertedContent(html);
   }, [editorState]);
 
-  // function createMarkup(html) {
-  //   return {
-  //     __html: DOMPurify.sanitize(html),
-  //   };
-  // }
-
-  //   useEffect(() => {
-  //   // DOMPurify ko client-side mein load karein
-  //   if (typeof window !== "undefined" ){
-  //         const loadDOMPurify = async () => {
-  //     const DOMPurify = await import('dompurify');
-  //     // DOMPurify ka use karein yahan
-  //   };
-  //   loadDOMPurify();
-  //   }
-  // }, []);
-
   useEffect(() => {
     getAllBlogs();
     let token = localStorage.getItem("token");
     if (!token) {
       router.push(`/pages/login`);
-      if (typeof window !== undefined) {
-        return;
-      }
     }
   }, []);
   return (
     <>
       {loading && <Loader />}
 
-      {/* <Navbar /> */}
+      <Navbar />
       <MyModal open={open} handleClose={handleClose}>
         <Box
           sx={{
@@ -276,7 +260,7 @@ const Blog = () => {
         </div>
       </Box>
       <div className="flex flex-col-reverse">
-        {blogList.map((value, index) => (
+        {blogList.map((value , index) => (
           <div key={value.id}>
             <div className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md">
               <div className="flex justify-between ">

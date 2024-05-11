@@ -1,27 +1,22 @@
 "use client";
-
-import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { BlogData } from "@/app/context/context";
-import axios from "axios";
-// import DOMPurify from "dompurify";
-// import DOMPurify from "isomorphic-dompurify";
+import { useParams , usePathname } from "next/navigation";
 import Loader from "@/app/component/loader/loader";
-import { useSearchParams } from 'next/navigation'
+import { Alert } from "flowbite-react";
+import { getData } from "./page";
+import Navbar from "@/app/component/navbar/navbar"
 const SingleBlog = () => {
   const [blogValue, setBlogValue] = useState({});
   const [loading, setLoading] = useState(true);
   const params = useParams();
+  const pathname = usePathname() ;
   console.log(params)
 
   const getSingleBlog = async () => {
     try {
-      const data = await axios.get(
-        `https://blog-app-next-chi.vercel.app/api/blogs/${params?.singleBlog}`
-      );
-      setBlogValue(data);
-      console.log(data);
+      const getBlog = await getData(params?.singleBlog)
+      setBlogValue(getBlog);
+      console.log(getBlog);
     } catch (error) {
       console.log(error);
     } finally {
@@ -30,12 +25,10 @@ const SingleBlog = () => {
   };
   useEffect(() => {
     getSingleBlog();
-    // if (typeof window !== undefined) {
-    //   return;
-    // }
   }, []);
   return (
     <>
+      <Navbar dynamicId={params?.singleBlog} />
       {!loading ? (
         <div
           key={blogValue?.data?.singleBlog?.id}
@@ -46,17 +39,6 @@ const SingleBlog = () => {
               {" "}
               {blogValue?.data?.singleBlog?.title}
             </h3>
-            <div>
-              {" "}
-              {/* <DeleteIcon className="cursor-pointer"
-                  //  onClick={ () => deleteBlog(blogValue?.data?.singleBlog?.id)}
-                    /> */}
-              {/* ******************** update button ****************** */}
-              {/* <ModeEditOutlineIcon
-                    className="cursor-pointer"
-                    // onClick={() => editBlog(blogValue?.data?.singleBlog?)}
-                  ></ModeEditOutlineIcon> */}
-            </div>
           </div>
 
           <div
@@ -64,10 +46,6 @@ const SingleBlog = () => {
               __html: blogValue?.data?.singleBlog?.description,
             }}
           ></div>
-
-          {/* <div
-                dangerouslySetInnerHTML={createMarkup(blogValue?.data?.singleBlog?.description)}
-              ></div> */}
         </div>
       ) : (
         <Loader />

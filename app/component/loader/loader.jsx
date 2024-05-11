@@ -3,7 +3,7 @@ import React from "react";
 const Loader = (classAdd) => {
   return (
     <>
-      <div className={`${classAdd} flex h-[100%] w-[100%] justify-center items-center absolute z-10 loader top-0`}>
+      <div className={`${classAdd} flex h-[100%] w-[100%] justify-center items-center fixed z-50 loader top-0`}>
         <div
           className={`flex items-center justify-center loader-child h-[100px] w-[100px] p-20 rounded-md`}
         >
