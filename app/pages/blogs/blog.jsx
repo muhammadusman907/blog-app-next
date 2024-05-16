@@ -235,7 +235,7 @@ const Blog = () => {
               />
             )}
           </div>
-          <div className="h-[200px] mt-2">
+          <div className=" mt-2">
             {addUpdate !== "update" && (
               <Editor
                 editorState={editorState}
@@ -262,7 +262,7 @@ const Blog = () => {
       <div className="flex flex-col-reverse">
         {blogList.map((value , index) => (
           <div key={value.id}>
-            <div className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md">
+            <div className="border p-3 box-shadow mt-3 min-h-[100px] container m-auto w-[70%] rounded-md">
               <div className="flex justify-between ">
                 <h3 className="font-bold text-[1.2rem] "> {value.title}</h3>
                 <div>

@@ -32,7 +32,7 @@ const SingleBlog = () => {
       {!loading ? (
         <div
           key={blogValue?.data?.singleBlog?.id}
-          className="border p-3 box-shadow mt-3 h-[100px] container m-auto w-[70%] rounded-md "
+          className="border p-3 box-shadow mt-3 min-h-[100px] container m-auto w-[70%] rounded-md "
         >
           <div className="flex justify-between ">
             <h3 className="font-bold text-[1.2rem] ">
